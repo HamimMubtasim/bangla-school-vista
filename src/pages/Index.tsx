@@ -1,12 +1,26 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import Navigation from '@/components/Navigation';
+import HeroSection from '@/components/HeroSection';
+import AboutSection from '@/components/AboutSection';
+import AcademicsSection from '@/components/AcademicsSection';
+import ContactSection from '@/components/ContactSection';
+import Footer from '@/components/Footer';
 
 const Index = () => {
+  const [language, setLanguage] = useState<'bn' | 'en'>('bn');
+
+  const handleLanguageChange = (lang: 'bn' | 'en') => {
+    setLanguage(lang);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold mb-4">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
+    <div className="min-h-screen">
+      <Navigation language={language} onLanguageChange={handleLanguageChange} />
+      <HeroSection language={language} />
+      <AboutSection language={language} />
+      <AcademicsSection language={language} />
+      <ContactSection language={language} />
+      <Footer language={language} />
     </div>
   );
 };
