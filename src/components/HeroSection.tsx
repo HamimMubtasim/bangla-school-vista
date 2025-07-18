@@ -83,7 +83,7 @@ const HeroSection = ({ language }: HeroSectionProps) => {
         >
           {/* Main Title */}
           <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight"
+            className="text-4xl md:text-6xl lg:text-7xl font-bold leading-tight pt-16"
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -113,19 +113,11 @@ const HeroSection = ({ language }: HeroSectionProps) => {
 
           {/* CTA Buttons */}
           <motion.div 
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8"
+            className="flex justify-center items-center mt-8"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <Button 
-              size="lg" 
-              variant="hero"
-              className="text-lg px-8 py-4 group"
-            >
-              {currentContent.cta1}
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Button>
             <Button 
               size="lg" 
               variant="outline"

@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FlaskConical, Calculator, BookText, Microscope, Globe, Palette } from 'lucide-react';
+import { FlaskConical, Calculator, BookText, Microscope, Globe, Palette, Book, Beaker, Languages, Music, Gamepad2, TreePine } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import classroomImg from '@/assets/classroom.jpg';
 import libraryImg from '@/assets/library.jpg';
@@ -10,10 +11,24 @@ interface AcademicsSectionProps {
 }
 
 const AcademicsSection = ({ language }: AcademicsSectionProps) => {
+  const [selectedLevel, setSelectedLevel] = useState<'primary' | 'secondary'>('secondary');
+
   const content = {
     bn: {
       title: 'একাডেমিক প্রোগ্রাম',
       subtitle: 'উন্নত পাঠ্যক্রম এবং বিশ্বমানের শিক্ষা',
+      togglePrimary: 'প্রাথমিক (১ম-৮ম শ্রেণি)',
+      toggleSecondary: 'মাধ্যমিক (৯ম-১০ম শ্রেণি)',
+      primarySubjects: [
+        { title: 'বাংলা', icon: Book, description: 'মাতৃভাষা শিক্ষা ও সাহিত্য' },
+        { title: 'ইংরেজি', icon: Languages, description: 'আন্তর্জাতিক ভাষা শিক্ষা' },
+        { title: 'গণিত', icon: Calculator, description: 'সংখ্যা ও গাণিতিক দক্ষতা' },
+        { title: 'বিজ্ঞান', icon: Beaker, description: 'প্রকৃতি ও বিজ্ঞান অধ্যয়ন' },
+        { title: 'সমাজবিজ্ঞান', icon: Globe, description: 'সমাজ ও ইতিহাস জ্ঞান' },
+        { title: 'ধর্ম শিক্ষা', icon: Book, description: 'নৈতিক ও ধর্মীয় মূল্যবোধ' },
+        { title: 'শিল্পকলা', icon: Palette, description: 'শিল্প ও সৃজনশীলতা' },
+        { title: 'শারীরিক শিক্ষা', icon: Gamepad2, description: 'স্বাস্থ্য ও ক্রীড়া' }
+      ],
       programs: [
         {
           title: 'বিজ্ঞান বিভাগ',
@@ -50,6 +65,18 @@ const AcademicsSection = ({ language }: AcademicsSectionProps) => {
     en: {
       title: 'Academic Programs',
       subtitle: 'Advanced Curriculum & World-Class Education',
+      togglePrimary: 'Primary (Classes 1-8)',
+      toggleSecondary: 'Secondary (Classes 9-10)',
+      primarySubjects: [
+        { title: 'Bengali', icon: Book, description: 'Mother tongue and literature' },
+        { title: 'English', icon: Languages, description: 'International language education' },
+        { title: 'Mathematics', icon: Calculator, description: 'Numbers and mathematical skills' },
+        { title: 'Science', icon: Beaker, description: 'Nature and science studies' },
+        { title: 'Social Science', icon: Globe, description: 'Society and history knowledge' },
+        { title: 'Religious Studies', icon: Book, description: 'Moral and religious values' },
+        { title: 'Arts', icon: Palette, description: 'Art and creativity' },
+        { title: 'Physical Education', icon: Gamepad2, description: 'Health and sports' }
+      ],
       programs: [
         {
           title: 'Science',
@@ -106,67 +133,130 @@ const AcademicsSection = ({ language }: AcademicsSectionProps) => {
           </p>
         </motion.div>
 
-        {/* Programs Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          {currentContent.programs.map((program, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              className="group cursor-pointer"
+        {/* Toggle Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-center mb-12"
+        >
+          <div className="bg-white rounded-2xl p-2 shadow-elegant">
+            <button
+              onClick={() => setSelectedLevel('primary')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                selectedLevel === 'primary'
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-muted-foreground hover:text-primary'
+              }`}
             >
-              <div className="bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-warm transition-all duration-500 group-hover:-translate-y-2">
-                {/* Image */}
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={program.image} 
-                    alt={program.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                  />
-                  <div className={`absolute inset-0 bg-gradient-to-br ${program.color} opacity-80 group-hover:opacity-90 transition-opacity`} />
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <program.icon className="w-16 h-16 text-white animate-bounce-gentle" />
+              {currentContent.togglePrimary}
+            </button>
+            <button
+              onClick={() => setSelectedLevel('secondary')}
+              className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 ${
+                selectedLevel === 'secondary'
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'text-muted-foreground hover:text-primary'
+              }`}
+            >
+              {currentContent.toggleSecondary}
+            </button>
+          </div>
+        </motion.div>
+
+        {/* Programs Grid */}
+        <div className="mb-16">
+          {selectedLevel === 'primary' ? (
+            /* Primary Level Subjects */
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {currentContent.primarySubjects.map((subject, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="bg-white rounded-xl p-6 shadow-elegant hover:shadow-warm transition-all duration-500 group-hover:-translate-y-2 text-center">
+                    <div className="w-16 h-16 bg-gradient-primary rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                      <subject.icon className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-lg font-bold text-primary mb-2 group-hover:text-primary-glow transition-colors">
+                      {subject.title}
+                    </h3>
+                    <p className="text-sm text-muted-foreground">
+                      {subject.description}
+                    </p>
                   </div>
-                </div>
+                </motion.div>
+              ))}
+            </div>
+          ) : (
+            /* Secondary Level Programs */
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              {currentContent.programs.map((program, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 50 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.2 }}
+                  className="group cursor-pointer"
+                >
+                  <div className="bg-white rounded-2xl overflow-hidden shadow-elegant hover:shadow-warm transition-all duration-500 group-hover:-translate-y-2">
+                    {/* Image */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={program.image} 
+                        alt={program.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className={`absolute inset-0 bg-gradient-to-br ${program.color} opacity-80 group-hover:opacity-90 transition-opacity`} />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <program.icon className="w-16 h-16 text-white animate-bounce-gentle" />
+                      </div>
+                    </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-2xl font-bold text-primary mb-3 group-hover:text-primary-glow transition-colors">
-                    {program.title}
-                  </h3>
-                  <p className="text-muted-foreground leading-relaxed mb-4">
-                    {program.description}
-                  </p>
+                    {/* Content */}
+                    <div className="p-6">
+                      <h3 className="text-2xl font-bold text-primary mb-3 group-hover:text-primary-glow transition-colors">
+                        {program.title}
+                      </h3>
+                      <p className="text-muted-foreground leading-relaxed mb-4">
+                        {program.description}
+                      </p>
 
-                  {/* Subjects */}
-                  <div className="space-y-2 mb-6">
-                    {program.subjects.map((subject, idx) => (
-                      <motion.div
-                        key={idx}
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.5, delay: idx * 0.1 }}
-                        className="flex items-center text-sm"
+                      {/* Subjects */}
+                      <div className="space-y-2 mb-6">
+                        {program.subjects.map((subject, idx) => (
+                          <motion.div
+                            key={idx}
+                            initial={{ opacity: 0, x: -20 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.5, delay: idx * 0.1 }}
+                            className="flex items-center text-sm"
+                          >
+                            <div className="w-2 h-2 bg-accent rounded-full mr-3" />
+                            <span className="text-foreground">{subject}</span>
+                          </motion.div>
+                        ))}
+                      </div>
+
+                      <Button 
+                        variant="outline" 
+                        className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all"
                       >
-                        <div className="w-2 h-2 bg-accent rounded-full mr-3" />
-                        <span className="text-foreground">{subject}</span>
-                      </motion.div>
-                    ))}
+                        {currentContent.cta}
+                      </Button>
+                    </div>
                   </div>
-
-                  <Button 
-                    variant="outline" 
-                    className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all"
-                  >
-                    {currentContent.cta}
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Facilities */}
